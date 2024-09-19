@@ -5,4 +5,4 @@
 build
 
 # Ignore any speedtest binaries
-app/src/main/kotlin/iqw/bin/*.exe
+app/src/main/kotlin/org/iqw/bin/*.exe
