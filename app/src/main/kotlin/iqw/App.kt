@@ -3,13 +3,31 @@
  */
 package iqw
 
+import iqw.bin.Executor
+import java.io.File
+
 class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
+    fun run(){
+        //val binaryPath = File("./src/main/kotlin/iqw/bin")
+        val binaryPath = File(".")
+        //println("Speedtest path: $speedtestPath")
+
+        /**
+        val files = currentDir.listFiles()
+        if (files != null) {
+            println("Files and directories in the current directory:")
+            for (file in files) {
+                println(file.name)
+            }
         }
+        */
+
+        val executor = Executor()
+        //executor.execute(binaryPath, "./speedtest.exe --format=json-pretty")
+        executor.execute(binaryPath, "java", "-version")
+    }
 }
 
 fun main() {
-    println(App().greeting)
+    App().run()
 }
