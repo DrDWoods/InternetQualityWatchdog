@@ -1,5 +1,6 @@
 package iqw.bin
 
+import java.io.BufferedReader
 import java.io.File
 
 /**
@@ -10,11 +11,11 @@ class Executor() {
     var stdout: String = "empty"
     var stderr: String = "empty"
 
-    fun execute(path: File, vararg args: String){
+    fun execute(path: String, vararg args: String){
         try{
 
             // Use ProcessBuilder to run the command
-            val processBuilder = ProcessBuilder(*args)
+            val processBuilder = ProcessBuilder(path, *args)
 
             // Redirect output and error streams to the console
             processBuilder.redirectOutput(ProcessBuilder.Redirect.INHERIT)
