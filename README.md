@@ -6,10 +6,10 @@ Currently the Ookla speedtest binary is used for the download/upload measurement
 is deserialised into a DTO and stored in a MySQL database.
 
 # Usage
-Must put the Ookla speedtest https://www.speedtest.net/apps/cli binary into the
+1. Put the Ookla speedtest https://www.speedtest.net/apps/cli binary into the
 src/main/kotlin/ikw/bin directory.
-
-1. ./gradlew build
-2. ./gradlew run
+2. Change username and password in org.iqw.database.DatabaseConfig
+3. ./gradlew build
+4. ./gradlew run
 
 The service can also be used as a docker container.
