@@ -15,7 +15,7 @@ object SpeedTableService {
      */
     fun createEntry(data: SpeedDataDTO): Unit {
         return transaction {
-            val userId = SpeedTable.insertAndGetId {
+            SpeedTable.insertAndGetId {
                 it[SpeedTable.timestamp] = data.timestamp
                 it[SpeedTable.downloadSpeed] = data.downloadSpeed
                 it[SpeedTable.uploadSpeed] = data.uploadSpeed

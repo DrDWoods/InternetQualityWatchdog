@@ -3,18 +3,22 @@
  */
 package org.iqw
 
+import org.iqw.database.DatabaseCreator
+import org.iqw.database.SpeedTableConfig
 import org.iqw.testers.ISpeedTester
 import org.iqw.testers.OoklaTester
 
 class App {
-    fun run(){
+    fun run(username: String, password: String){
         val tester: ISpeedTester = OoklaTester()
         val data = tester.speedTest()
         print(data.downloadSpeed)
         print(data.uploadSpeed)
+
+        DatabaseCreator.createDatabaseIfNotExists("SpeedDatabase", username, password)
     }
 }
 
 fun main() {
-    App().run()
+    App().run("root", "Consider963!")
 }

@@ -26,6 +26,8 @@ class OoklaTester : ISpeedTester {
      * Deserialise data from Ookla into a standardised SpeedDataDTO object for storage.
      */
     private fun extractInformation(output: String): SpeedDataDTO {
+        // TODO this can throw. "Use 'ignoreUnknownKeys = true' in 'Json {}' builder to ignore unknown keys."
+        // TODO Add exception handling and some tests
         val ooklaData: OoklaDTO = Json.decodeFromString<OoklaDTO>(output)
         return SpeedDataDTO(timestamp = Instant.parse(ooklaData.timestamp), downloadSpeed = ooklaData.download.bytes, uploadSpeed = ooklaData.upload.bytes)
     }

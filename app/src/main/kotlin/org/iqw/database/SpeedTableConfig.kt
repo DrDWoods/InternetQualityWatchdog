@@ -10,7 +10,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object SpeedTableConfig {
 
     /**
-     * Create a database
+     * Create a database NEEDS CHANGING
      */
     fun create(database: Database){
         transaction(database){
@@ -21,12 +21,12 @@ object SpeedTableConfig {
     /**
      * Connect the application to an existing database
      */
-    fun connect() {
+    fun connect(databaseName: String, username: String, password: String) {
         Database.connect(
-            url = "jdbc:mysql://localhost:3306/your_database_name",  // Replace with your MySQL URL
+            url = "jdbc:mysql://localhost:3306/$databaseName",  // Replace with your MySQL URL
             driver = "com.mysql.cj.jdbc.Driver",
-            user = "your_user",  // Replace with your MySQL user
-            password = "your_password"  // Replace with your MySQL password
+            user = username,
+            password = password
         )
     }
 }
