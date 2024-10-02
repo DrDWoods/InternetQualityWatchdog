@@ -3,3 +3,6 @@
 
 # Ignore Gradle build output directory
 build
+
+# Ignore any speedtest binaries
+app/src/main/kotlin/org/iqw/bin/*.exe

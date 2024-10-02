@@ -11,6 +11,7 @@ plugins {
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    alias(libs.plugins.kotlinx)
 }
 
 repositories {
@@ -29,6 +30,7 @@ dependencies {
 
     // This dependency is used by the application.
     implementation(libs.guava)
+    implementation(libs.kotlinx)
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -40,7 +42,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "iqw.AppKt"
+    mainClass = "org.iqw.AppKt"
 }
 
 tasks.named<Test>("test") {
