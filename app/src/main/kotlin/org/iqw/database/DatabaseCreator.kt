@@ -9,7 +9,6 @@ object DatabaseCreator {
     fun createDatabaseIfNotExists(connection: Connection, dbName: String) {
 
         // Connect to MySQL server, not a specific database
-        //val connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=$dbUser&password=$dbPassword")
         val statement = connection.createStatement()
 
         // Create the database if it doesn't exist

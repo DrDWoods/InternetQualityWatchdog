@@ -6,6 +6,7 @@ import org.iqw.database.SpeedTableConfig
 import org.iqw.database.SpeedTableService
 import org.iqw.database.TableCreator
 import org.iqw.dto.SpeedDataDTO
+import org.iqw.dto.SpeedDataParser
 import org.iqw.testers.ISpeedTester
 import org.iqw.testers.OoklaTester
 import java.sql.DriverManager
@@ -43,11 +44,15 @@ class App {
         ))
 
         // Print latest entry
-        println(SpeedTableService.getLatest())
+        val data = SpeedTableService.getLatest()
+        if(data != null)
+            SpeedDataParser.parse(data)
 
     }
 }
 
 fun main() {
-    App().run("root", "X")
+    val username = System.getenv("MySQLUsername")
+    val password = System.getenv("MySQLPassword")
+    App().run(username, password)
 }
