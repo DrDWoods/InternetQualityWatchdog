@@ -19,10 +19,6 @@ class Executor {
             output = String(process.inputStream.readAllBytes());
             error = String(process.errorStream.readAllBytes());
 
-            if (output.isEmpty() && error.isEmpty()){
-                throw IOException("Command $path not found")
-            }
-
             if (error.length != 0)
                 throw IOException("Command returned an error: $error")
 

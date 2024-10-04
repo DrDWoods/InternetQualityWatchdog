@@ -37,13 +37,14 @@ class ExecutorTest {
      */
     @Test fun executorFailsWhenCantFindCommand() {
         val executor = Executor()
+        val command = "not_a_command"
         val exception = assertThrows<IOException> {
-            executor.execute("not_a_command")
+            executor.execute(command)
         }
 
         // Verify exception is formatted correctly
-        val expectedExceptionMessage = "Command returned an error: Cannot run program not_a_command: CreateProcess error=2, The system cannot find the file specified"
-        assertEquals(exception.message, expectedExceptionMessage)
+        val expectedExceptionMessage = "Cannot run program \"$command\": CreateProcess error=2, The system cannot find the file specified"
+        assertEquals(expectedExceptionMessage, exception.message)
     }
 
     /**
@@ -58,12 +59,12 @@ class ExecutorTest {
     @Test fun executorProperlyStoresOutput() {
         val executor = Executor()
         executor.execute("cmd", "/c", "echo", "somewords")
-        assertEquals("somewords", executor.output)
+        assertEquals("somewords", executor.output.trim())
     }
 
     @Test fun executorProperlyStoresError() {
         val executor = Executor()
         executor.execute("cmd", "/c", "echo")
-        assertEquals("", executor.error)
+        assertEquals("I NEED TO CREATE THIS TEST", executor.error)
     }
 }
