@@ -5,7 +5,6 @@ import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.time.Instant
 
 
 object SpeedTableService {
@@ -16,7 +15,7 @@ object SpeedTableService {
     fun createEntry(data: SpeedDataDTO): Unit {
         return transaction {
             SpeedTable.insertAndGetId {
-                it[SpeedTable.timestamp] = data.timestamp
+                it[SpeedTable.localDateTime] = data.localDateTime
                 it[SpeedTable.downloadSpeed] = data.downloadSpeed
                 it[SpeedTable.uploadSpeed] = data.uploadSpeed
             }
@@ -29,10 +28,10 @@ object SpeedTableService {
     fun getLatest(): SpeedDataDTO? {
         return transaction {
             SpeedTable.selectAll()
-                .orderBy(SpeedTable.timestamp, SortOrder.DESC)
+                .orderBy(SpeedTable.localDateTime, SortOrder.DESC)
                 .limit(1)
                 .mapNotNull { SpeedDataDTO(
-                    timestamp = it[SpeedTable.timestamp],
+                    localDateTime = it[SpeedTable.localDateTime],
                     downloadSpeed = it[SpeedTable.downloadSpeed],
                     uploadSpeed = it[SpeedTable.uploadSpeed]
                 )
