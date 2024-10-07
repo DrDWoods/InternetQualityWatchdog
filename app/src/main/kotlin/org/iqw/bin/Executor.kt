@@ -10,21 +10,24 @@ class Executor {
     var output: String = ""
     var error: String = ""
 
+    /**
+     * Execute and external process
+     *
+     * @param path Directory path to process
+     * @param args arguments for process at [path]
+     * @throws IOException If the external process fails
+     */
     fun execute(path: String, vararg args: String){
-        try {
-            // Use ProcessBuilder to run the command
-            val process = ProcessBuilder(path, *args).start()
 
-            // This is blocking
-            output = String(process.inputStream.readAllBytes());
-            error = String(process.errorStream.readAllBytes());
+        // Use ProcessBuilder to run the command
+        val process = ProcessBuilder(path, *args).start()
 
-            if (error.length != 0)
-                throw IOException("Command returned an error: $error")
+        // This is blocking
+        output = String(process.inputStream.readAllBytes());
+        error = String(process.errorStream.readAllBytes());
 
-        } catch (exception: IOException) {
-            "IOException occurred: ${exception.message}"
-            throw exception
+        if(error.isNotEmpty()){
+            throw IOException("External process failed.")
         }
     }
 }

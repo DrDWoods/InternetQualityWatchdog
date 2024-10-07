@@ -4,6 +4,7 @@
 package iqw
 
 import org.iqw.bin.Executor
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -20,7 +21,6 @@ class ExecutorTest {
      * Tests that [Executor] can find basic system executables.
      *
      * Execute the echo command
-     *
      * @throws IOException if the command "cmd" or "echo" cannot be found.
      */
     @Test fun executorCanFindBasicCommands() {
@@ -33,7 +33,6 @@ class ExecutorTest {
      *
      * Execute a non-existent command and verify an [IOException] is thrown with
      * a predictable format.
-     *
      */
     @Test fun executorFailsWhenCantFindCommand() {
         val executor = Executor()
@@ -52,9 +51,6 @@ class ExecutorTest {
      *
      * Execute an echo command and asserts that the output
      * stored in the object is as expected.
-     *
-     * @throws IOException if the command "cmd" or "echo" cannot be found.
-     * @throws AssertionError if the stored output does not match the expected value.
      */
     @Test fun executorProperlyStoresOutput() {
         val executor = Executor()
@@ -62,9 +58,22 @@ class ExecutorTest {
         assertEquals("somewords", executor.output.trim())
     }
 
+    /**
+     * Tests that [Executor] properly stores any errors associated with the external process.
+     *
+     * Execute a systeminfo command with an incorrect flag. Assert
+     * that an IOException is thrown and that the captured
+     * error of expected format.
+     */
     @Test fun executorProperlyStoresError() {
         val executor = Executor()
-        executor.execute("cmd", "/c", "echo")
-        assertEquals("I NEED TO CREATE THIS TEST", executor.error)
+        val incorrectFlag = "NotACorrectOption"
+        assertThrows<IOException> {
+            executor.execute("cmd", "/c", "systeminfo", "/fo", incorrectFlag)
+        }
+
+        val expectedError = "ERROR: Invalid syntax. '$incorrectFlag' value is not allowed for '/fo' option."
+        assertTrue(executor.error.contains(expectedError))
     }
+
 }
