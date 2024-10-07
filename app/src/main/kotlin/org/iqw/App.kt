@@ -55,15 +55,5 @@ class App {
 fun main() {
     val username = System.getenv("MySQLUsername")
     val password = System.getenv("MySQLPassword")
-    //App().run(username, password)
-
-    /*
-    val executor = Executor()
-    executor.execute("notacommand")
-    //executor.execute("cmd", "/c", "echo", "somewords")
-    val output = executor.output.length + executor.error.length
-    println(executor.output.isEmpty())
-    println("OUTPUT: $output")
-
-     */
+    App().run(username, password)
 }
