@@ -18,13 +18,5 @@ object SpeedDataParser {
                 "Date & Time: $formattedDateTime\n" +
                 "Download Speed: ${speedData.downloadSpeed}\n" +
                 "Upload Speed: ${speedData.uploadSpeed}\n"
-
-        /*
-        println("Speed Data:")
-        println("Date & Time: $formattedDateTime")
-        println("Download Speed: ${speedData.downloadSpeed} Mbps")
-        println("Upload Speed: ${speedData.uploadSpeed} Mbps")
-
-         */
     }
 }
