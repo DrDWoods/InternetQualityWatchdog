@@ -12,13 +12,13 @@ import java.io.IOException
 
 
 /**
- * Test class for [Executor] to verify its output handling.
+ * Test class for [Executor] to verify its ability to launch an
+ * external command and store the output/error
  */
 class ExecutorTest {
 
-
     /**
-     * Tests that [Executor] can find basic system executables.
+     * Test that [Executor] can find basic system executables.
      *
      * Execute the echo command
      * @throws IOException if the command "cmd" or "echo" cannot be found.
@@ -29,7 +29,7 @@ class ExecutorTest {
     }
 
     /**
-     * Tests that [Executor] errors as predicted when commands can't be found.
+     * Test that [Executor] errors as predicted when commands can't be found.
      *
      * Execute a non-existent command and verify an [IOException] is thrown with
      * a predictable format.
@@ -47,7 +47,7 @@ class ExecutorTest {
     }
 
     /**
-     * Tests that [Executor] properly stores the output of a command.
+     * Test that [Executor] properly stores the output of a command.
      *
      * Execute an echo command and asserts that the output
      * stored in the object is as expected.
@@ -59,7 +59,7 @@ class ExecutorTest {
     }
 
     /**
-     * Tests that [Executor] properly stores any errors associated with the external process.
+     * Test that [Executor] properly stores any errors associated with the external process.
      *
      * Execute a systeminfo command with an incorrect flag. Assert
      * that an IOException is thrown and that the captured

@@ -29,6 +29,9 @@ class OoklaTester : ISpeedTester {
     private fun extractInformation(output: String): SpeedDataDTO {
         val withUnknownKeys = Json { ignoreUnknownKeys = true }
         val ooklaData: OoklaDTO = withUnknownKeys.decodeFromString<OoklaDTO>(output)
-        return SpeedDataDTO(localDateTime = LocalDateTime.now(), downloadSpeed = ooklaData.download.bytes, uploadSpeed = ooklaData.upload.bytes)
+        return SpeedDataDTO(
+            localDateTime = LocalDateTime.now().withNano(0), // Ignore [ns] precision
+            downloadSpeed = ooklaData.download.bytes,
+            uploadSpeed = ooklaData.upload.bytes)
     }
 }
