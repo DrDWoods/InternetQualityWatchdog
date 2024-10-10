@@ -16,7 +16,7 @@ import java.time.LocalDateTime
 class App {
     fun run(dbUser: String, dbPassword: String){
         val tester: ISpeedTester = OoklaTester()
-        val testData = tester.speedTest()
+        val testData = tester.speedTest("src/main/kotlin/org/iqw/bin/speedtest.exe")
         val localDateTime = testData.localDateTime
         val downloadSpeed = testData.downloadSpeed
         val uploadSpeed = testData.uploadSpeed

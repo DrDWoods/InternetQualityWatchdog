@@ -16,15 +16,15 @@ class OoklaTester : ISpeedTester {
     /**
      * Check the internet quality and return information in storable SpeedDataDTO format.
      */
-    override fun speedTest(): SpeedDataDTO {
+    override fun speedTest(binaryPath: String): SpeedDataDTO {
         val executor = Executor()
-        executor.execute("src/main/kotlin/org/iqw/bin/speedtest.exe", "--format=json-pretty")
+        executor.execute(binaryPath, "--format=json-pretty")
         return extractInformation(executor.output)
     }
 
 
     /**
-     * Deserialise data from Ookla into a standardised SpeedDataDTO object for storage.
+     * Deserialise data from Ookla into a standardised SpeedDataDTO object.
      */
     private fun extractInformation(output: String): SpeedDataDTO {
         val withUnknownKeys = Json { ignoreUnknownKeys = true }
