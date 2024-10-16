@@ -1,6 +1,5 @@
 package org.iqw.bin
 
-import java.io.IOException
 import kotlin.collections.mutableListOf
 
 /**
@@ -24,6 +23,7 @@ class Executor private constructor(private val binaryPath: String, private val a
         val process = ProcessBuilder(binaryPath, args.joinToString()).start()
 
         // This is blocking
+        // TODO: Add coroutines to output and error as they are currently blocking the program.
         val output = String(process.inputStream.readAllBytes()).trim();
         val error = String(process.errorStream.readAllBytes()).trim();
 
