@@ -27,6 +27,9 @@ dependencies {
     testImplementation(libs.junit.jupiter.engine)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+    // Standard library
+    implementation(libs.kotlin.stl)
+
     // Exposed (database)
     implementation(libs.exposed.core)
     implementation(libs.exposed.dao)

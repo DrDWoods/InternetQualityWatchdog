@@ -1,33 +1,59 @@
 package org.iqw.bin
 
 import java.io.IOException
+import kotlin.collections.mutableListOf
 
 /**
- * Execute a binary and store stdout and stderr
+ * Execute a binary and store output and error.
  */
-class Executor {
-
-    var output: String = ""
-    var error: String = ""
+class Executor private constructor(private val binaryPath: String, private val args: MutableList<String>) {
 
     /**
-     * Execute and external process
-     *
-     * @param path Directory path to process
-     * @param args arguments for process at [path]
-     * @throws IOException If the external process fails
+     * Contain the output of the command executed by [execute]
      */
-    fun execute(path: String, vararg args: String){
+    sealed class Result<out T> {
+        data class Success<out T>(val data: T) : Result<T>()
+        data class Error<out T>(val data: T) : Result<T>()
+    }
 
+    /**
+     * Execute the external process at [binaryPath]. Return true on success.
+     */
+    fun execute(): Result<String>{
         // Use ProcessBuilder to run the command
-        val process = ProcessBuilder(path, *args).start()
+        val process = ProcessBuilder(binaryPath, args.joinToString()).start()
 
         // This is blocking
-        output = String(process.inputStream.readAllBytes());
-        error = String(process.errorStream.readAllBytes());
+        val output = String(process.inputStream.readAllBytes()).trim();
+        val error = String(process.errorStream.readAllBytes()).trim();
 
-        if(error.isNotEmpty()){
-            throw IOException("External process failed.")
+        return if(error.isEmpty()){
+            Result.Success(output)
+        } else {
+            // TODO: Log here that the external process failed.
+            Result.Error(error)
+        }
+    }
+
+    /**
+     * Builder for [Executor].
+     *
+     * @param binaryPath path to external binary that will be executed. If
+     * the binary is within the $PATH env var then an absolute path is not
+     * required.
+     */
+    class ExecutorBuilder(private val binaryPath: String){
+        private val args: MutableList<String> = mutableListOf()
+
+        /**
+         * Optionally supply arguments for external binary.
+         *
+         * @param args arguments supplied to [binaryPath].
+         */
+        fun addArgs(vararg args: String) = apply { this.args.addAll(args) }
+
+        fun build(): Executor{
+            return Executor(binaryPath, args)
         }
     }
 }

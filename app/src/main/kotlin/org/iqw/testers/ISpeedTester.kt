@@ -9,5 +9,5 @@ import org.iqw.dto.SpeedDataDTO
  * internet speed test functionality.
  */
 interface ISpeedTester {
-    fun speedTest(binaryPath: String) : SpeedDataDTO
+    fun speedTest(binaryPath: String) : SpeedDataDTO?
 }

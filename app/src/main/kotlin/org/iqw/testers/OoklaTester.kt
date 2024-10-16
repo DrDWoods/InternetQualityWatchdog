@@ -16,10 +16,15 @@ class OoklaTester : ISpeedTester {
     /**
      * Check the internet quality and return information in storable SpeedDataDTO format.
      */
-    override fun speedTest(binaryPath: String): SpeedDataDTO {
-        val executor = Executor()
-        executor.execute(binaryPath, "--format=json-pretty")
-        return extractInformation(executor.output)
+    override fun speedTest(binaryPath: String): SpeedDataDTO? {
+        val executor = Executor.ExecutorBuilder(binaryPath)
+            .addArgs("--format=json-pretty")
+            .build()
+
+        return when(val result = executor.execute()){
+            is Executor.Result.Success -> extractInformation(result.data)
+            is Executor.Result.Error -> null
+        }
     }
 
 

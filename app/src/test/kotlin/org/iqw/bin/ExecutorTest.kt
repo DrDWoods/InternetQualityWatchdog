@@ -5,11 +5,11 @@ package iqw
 
 import org.iqw.bin.Executor
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import java.io.IOException
-
 
 /**
  * Test class for [Executor] to verify its ability to launch an
@@ -24,8 +24,10 @@ class ExecutorTest {
      * @throws IOException if the command "cmd" or "echo" cannot be found.
      */
     @Test fun executorCanFindBasicCommands() {
-        val executor = Executor()
-        executor.execute("cmd", "/c", "echo")
+        val executor = Executor.ExecutorBuilder("cmd")
+            .addArgs("/c", "echo")
+            .build()
+        executor.execute()
     }
 
     /**
@@ -35,14 +37,15 @@ class ExecutorTest {
      * a predictable format.
      */
     @Test fun executorFailsWhenCantFindCommand() {
-        val executor = Executor()
-        val command = "not_a_command"
+        val problematicCommand = "not_a_command"
+        val executor = Executor.ExecutorBuilder(problematicCommand)
+            .build()
+
         val exception = assertThrows<IOException> {
-            executor.execute(command)
+            executor.execute()
         }
 
-        // Verify exception is formatted correctly
-        val expectedExceptionMessage = "Cannot run program \"$command\": CreateProcess error=2, The system cannot find the file specified"
+        val expectedExceptionMessage = "Cannot run program \"$problematicCommand\": CreateProcess error=2, The system cannot find the file specified"
         assertEquals(expectedExceptionMessage, exception.message)
     }
 
@@ -53,9 +56,14 @@ class ExecutorTest {
      * stored in the object is as expected.
      */
     @Test fun executorProperlyStoresOutput() {
-        val executor = Executor()
-        executor.execute("cmd", "/c", "echo", "somewords")
-        assertEquals("somewords", executor.output.trim())
+        val executor = Executor.ExecutorBuilder("cmd")
+            .addArgs("/c", "echo", "somewords")
+            .build()
+
+        when(val result = executor.execute()){
+            is Executor.Result.Error -> fail(result.data)
+            is Executor.Result.Success -> assertEquals("somewords\"", result.data)
+        }
     }
 
     /**
@@ -66,14 +74,16 @@ class ExecutorTest {
      * error of expected format.
      */
     @Test fun executorProperlyStoresError() {
-        val executor = Executor()
         val incorrectFlag = "NotACorrectOption"
-        assertThrows<IOException> {
-            executor.execute("cmd", "/c", "systeminfo", "/fo", incorrectFlag)
-        }
+
+        val executor = Executor.ExecutorBuilder("cmd")
+            .addArgs("systeminfo", "/fo", incorrectFlag)
+            .build()
 
         val expectedError = "ERROR: Invalid syntax. '$incorrectFlag' value is not allowed for '/fo' option."
-        assertTrue(executor.error.contains(expectedError))
+        when (val result = executor.execute()) {
+            is Executor.Result.Error -> assertTrue(result.data.contains(expectedError))
+            is Executor.Result.Success -> TODO()
+        }
     }
-
 }

@@ -10,13 +10,17 @@ import org.iqw.dto.SpeedDataDTO
 import org.iqw.dto.SpeedDataParser
 import org.iqw.testers.ISpeedTester
 import org.iqw.testers.OoklaTester
+import java.io.IOException
 import java.sql.DriverManager
 import java.time.LocalDateTime
 
 class App {
     fun run(dbUser: String, dbPassword: String){
-        val tester: ISpeedTester = OoklaTester()
+        val tester = OoklaTester()
+
         val testData = tester.speedTest("src/main/kotlin/org/iqw/bin/speedtest.exe")
+            ?: return
+
         val localDateTime = testData.localDateTime
         val downloadSpeed = testData.downloadSpeed
         val uploadSpeed = testData.uploadSpeed
@@ -55,5 +59,13 @@ class App {
 fun main() {
     val username = System.getenv("MySQLUsername")
     val password = System.getenv("MySQLPassword")
-    App().run(username, password)
+    //App().run(username, password)
+    val executor = Executor.ExecutorBuilder("cmd")
+        .addArgs("/c", "echo", "somewords")
+        .build()
+
+    when(val result = executor.execute()){
+        is Executor.Result.Error -> println(result.data)
+        is Executor.Result.Success -> println(result.data)
+    }
 }
