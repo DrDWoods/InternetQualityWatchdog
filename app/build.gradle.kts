@@ -36,6 +36,10 @@ dependencies {
     implementation(libs.exposed.jdbc)
     implementation(libs.exposed.time)
 
+    // Co-routines
+    implementation(libs.coroutines)
+    implementation(libs.coroutines.test)
+
     // JDBC driver
     implementation(libs.jdbc)
 

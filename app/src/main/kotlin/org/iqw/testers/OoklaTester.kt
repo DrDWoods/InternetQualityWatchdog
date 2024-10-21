@@ -14,7 +14,10 @@ import java.time.LocalDateTime
 class OoklaTester : ISpeedTester {
 
     /**
-     * Check the internet quality and return information in storable SpeedDataDTO format.
+     * Checks the internet quality by running a speed test using the Ookla binary.
+     *
+     * @param binaryPath The file path of the speed test binary to execute.
+     * @return A [SpeedDataDTO] object containing the speed test results, or `null` if an error occurs.
      */
     override fun speedTest(binaryPath: String): SpeedDataDTO? {
         val executor = Executor.ExecutorBuilder(binaryPath)
@@ -27,9 +30,8 @@ class OoklaTester : ISpeedTester {
         }
     }
 
-
     /**
-     * Deserialise data from Ookla into a standardised SpeedDataDTO object.
+     * Deserialise data from Ookla binary into a standardised SpeedDataDTO object.
      */
     private fun extractInformation(output: String): SpeedDataDTO {
         val withUnknownKeys = Json { ignoreUnknownKeys = true }

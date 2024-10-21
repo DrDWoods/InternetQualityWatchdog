@@ -1,5 +1,6 @@
 package org.iqw
 
+import kotlinx.coroutines.runBlocking
 import org.iqw.bin.Executor
 import org.iqw.database.DatabaseCreator
 import org.iqw.database.SpeedTable
@@ -59,13 +60,6 @@ class App {
 fun main() {
     val username = System.getenv("MySQLUsername")
     val password = System.getenv("MySQLPassword")
-    //App().run(username, password)
-    val executor = Executor.ExecutorBuilder("cmd")
-        .addArgs("/c", "echo", "somewords")
-        .build()
-
-    when(val result = executor.execute()){
-        is Executor.Result.Error -> println(result.data)
-        is Executor.Result.Success -> println(result.data)
-    }
+    val incorrectFlag = "NotACorrectOption"
+    App().run(username, password)
 }

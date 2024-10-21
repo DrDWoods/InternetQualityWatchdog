@@ -1,31 +1,37 @@
 package org.iqw.bin
 
-import kotlin.collections.mutableListOf
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
+import java.io.File
 
 /**
- * Execute a binary and store output and error.
+ * Asynchronously execute an external binary and store the output.
  */
-class Executor private constructor(private val binaryPath: String, private val args: MutableList<String>) {
+class Executor private constructor(private val processBuilder: ProcessBuilder) {
 
     /**
-     * Contain the output of the command executed by [execute]
+     * Contain the output of [execute].
      */
     sealed class Result<out T> {
         data class Success<out T>(val data: T) : Result<T>()
         data class Error<out T>(val data: T) : Result<T>()
     }
-
     /**
-     * Execute the external process at [binaryPath]. Return true on success.
+     * Execute the external process described by [ProcessBuilder].
+     * @return [Result] holding stdout or stderr on fail.
      */
     fun execute(): Result<String>{
-        // Use ProcessBuilder to run the command
-        val process = ProcessBuilder(binaryPath, args.joinToString()).start()
+        val process = processBuilder.start()
 
-        // This is blocking
-        // TODO: Add coroutines to output and error as they are currently blocking the program.
-        val output = String(process.inputStream.readAllBytes()).trim();
-        val error = String(process.errorStream.readAllBytes()).trim();
+        val outputReader = process.inputStream.bufferedReader()
+        val errorReader = process.errorStream.bufferedReader()
+
+        process.waitFor() // External process is finished
+        val output = outputReader.readText().trim()
+        val error = errorReader.readText().trim()
 
         return if(error.isEmpty()){
             Result.Success(output)
@@ -52,8 +58,12 @@ class Executor private constructor(private val binaryPath: String, private val a
          */
         fun addArgs(vararg args: String) = apply { this.args.addAll(args) }
 
+        fun getArgs(): MutableList<String> {
+            return this.args
+        }
+
         fun build(): Executor{
-            return Executor(binaryPath, args)
+            return Executor(ProcessBuilder(binaryPath, *args.toTypedArray()))
         }
     }
 }

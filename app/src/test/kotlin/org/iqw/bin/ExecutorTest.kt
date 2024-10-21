@@ -7,9 +7,9 @@ import org.iqw.bin.Executor
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.assertThrows
-import kotlin.test.Test
 import kotlin.test.assertEquals
 import java.io.IOException
+import kotlin.test.Test
 
 /**
  * Test class for [Executor] to verify its ability to launch an
@@ -23,7 +23,8 @@ class ExecutorTest {
      * Execute the echo command
      * @throws IOException if the command "cmd" or "echo" cannot be found.
      */
-    @Test fun executorCanFindBasicCommands() {
+    @Test
+    fun executorCanFindBasicCommands() {
         val executor = Executor.ExecutorBuilder("cmd")
             .addArgs("/c", "echo")
             .build()
@@ -36,7 +37,8 @@ class ExecutorTest {
      * Execute a non-existent command and verify an [IOException] is thrown with
      * a predictable format.
      */
-    @Test fun executorFailsWhenCantFindCommand() {
+    @Test
+    fun executorFailsWhenCantFindCommand() {
         val problematicCommand = "not_a_command"
         val executor = Executor.ExecutorBuilder(problematicCommand)
             .build()
@@ -55,14 +57,15 @@ class ExecutorTest {
      * Execute an echo command and asserts that the output
      * stored in the object is as expected.
      */
-    @Test fun executorProperlyStoresOutput() {
+    @Test
+    fun executorProperlyStoresOutput() {
         val executor = Executor.ExecutorBuilder("cmd")
             .addArgs("/c", "echo", "somewords")
             .build()
 
         when(val result = executor.execute()){
             is Executor.Result.Error -> fail(result.data)
-            is Executor.Result.Success -> assertEquals("somewords\"", result.data)
+            is Executor.Result.Success -> assertEquals("somewords", result.data)
         }
     }
 
@@ -73,11 +76,12 @@ class ExecutorTest {
      * that an IOException is thrown and that the captured
      * error of expected format.
      */
-    @Test fun executorProperlyStoresError() {
+    @Test
+    fun executorProperlyStoresError() {
         val incorrectFlag = "NotACorrectOption"
 
         val executor = Executor.ExecutorBuilder("cmd")
-            .addArgs("systeminfo", "/fo", incorrectFlag)
+            .addArgs("/c", "systeminfo", "/fo", incorrectFlag)
             .build()
 
         val expectedError = "ERROR: Invalid syntax. '$incorrectFlag' value is not allowed for '/fo' option."

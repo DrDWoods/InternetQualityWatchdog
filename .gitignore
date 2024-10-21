@@ -9,3 +9,7 @@ app/src/main/kotlin/org/iqw/bin/*.exe
 
 # Ignore catch of MySQL setup.
 MySQL_setup.png
+
+# Ignore local settings
+.idea/
+local.properties
