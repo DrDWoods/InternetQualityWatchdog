@@ -9,6 +9,7 @@ exposed = "0.55.0"
 jdbc = "8.0.33"
 kotlin-stlib = "2.0.0"
 coroutines = "1.9.0"
+mockito = "5.12.0"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
@@ -22,6 +23,7 @@ jdbc = { module = "mysql:mysql-connector-java", version.ref = "jdbc" }
 kotlin-stl = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin-stlib" }
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test",  version.ref = "coroutines" }
+mockito-core = { module = "org.mockito:mockito-core",  version.ref = "mockito" }
 
 [plugins]
 jvm = { id = "org.jetbrains.kotlin.jvm", version = "1.9.22" }

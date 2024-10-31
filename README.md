@@ -1,5 +1,5 @@
 # InternetQualityWatchdog
-Simple service that tracks internet quality over time.
+Tracks internet quality over time using MySQL storage.
 
 # Data
 Currently the Ookla speedtest binary is used for the download/upload measurement. This information

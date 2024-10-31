@@ -51,15 +51,17 @@ class App {
 
         // Print latest entry
         val data = SpeedTableService.getLatest()
-        if(data != null)
-            SpeedDataParser.parse(data)
-
+        if(data != null) {
+            println(SpeedDataParser.parse(data))
+        }
+        else{
+            println("Error: Getting database data resulted in null")
+        }
     }
 }
 
 fun main() {
     val username = System.getenv("MySQLUsername")
     val password = System.getenv("MySQLPassword")
-    val incorrectFlag = "NotACorrectOption"
     App().run(username, password)
 }

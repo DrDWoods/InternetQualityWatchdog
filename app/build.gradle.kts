@@ -43,9 +43,13 @@ dependencies {
     // JDBC driver
     implementation(libs.jdbc)
 
-    // This dependency is used by the application.
-    implementation(libs.guava)
+
+    //implementation(libs.guava)
+    // Serialization of DTO
     implementation(libs.kotlinx)
+
+    // Mocking
+    testImplementation(libs.mockito.core)
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
